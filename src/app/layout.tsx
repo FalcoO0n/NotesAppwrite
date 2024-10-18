@@ -2,7 +2,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import Navigation from '@/components/Navigation'
 import Notification from '@/components/Notification'
-
+import Providers from '../lib/providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -18,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Providers>
         <header className="bg-blue-500 p-4">
           <div className="container mx-auto">
             <h1 className="text-white text-2xl font-bold">Bill Splitter</h1>
@@ -27,7 +28,8 @@ export default function RootLayout({
         <main className="container mx-auto mt-8">
           {children}
         </main>
-        <Notification />
+          <Notification />
+        </Providers>
       </body>
     </html>
   )

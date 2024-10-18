@@ -1,16 +1,26 @@
 import { databases, ID } from "@/lib/appwrite";
 import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 function ChatRoom() {
   const [messages, setMessages] = useState<any>([]);
   const [message, setMessage] = useState<string>("");
 
-  useEffect(() => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["messages"],
+    queryFn: () => {
+      databases.listDocuments(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+        process.env.NEXT_PUBLIC_APPWRITE_CHAT_COLLECTION_ID!
+      );
+    },
+  });
+  console.log(data, "daaaaaa");
+  let getMessages = async () => {
     let promise = databases.listDocuments(
       process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
       process.env.NEXT_PUBLIC_APPWRITE_CHAT_COLLECTION_ID!
     );
-
     promise.then(
       (response) => {
         console.log(response, "response");
@@ -20,6 +30,11 @@ function ChatRoom() {
         console.log(error, "error");
       }
     );
+  };
+
+  useEffect(() => {
+    getMessages();
+    console.log(messages, "messagesEffect");
   }, []);
 
   const handleSendMessage = (message: string) => {
@@ -31,15 +46,17 @@ function ChatRoom() {
         body: message,
       }
     );
-
     promise.then(
       (response) => {
         console.log(response, "response");
+        setMessages([...messages, response]);
       },
       (error) => {
         console.log(error, "error");
       }
     );
+
+    setMessage("");
   };
 
   const submitMessage = (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,16 +64,11 @@ function ChatRoom() {
     handleSendMessage(message);
   };
 
-//   console.log(
-//     messages.map((message: any) => message.body),
-//     "messages"
-//   );
-
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-col items-end">
+      <div className="flex flex-col items-end max-h-[500px] overflow-y-auto  p-2">
         {messages?.map((message: any) => (
-          <div key={message.$id} className="flex flex-col max-w-[70%] mb-2">
+          <div key={message.$id} className="flex flex-col max-w-[70%] mb-2 ">
             <div className="bg-blue-500 text-white rounded-tl-xl rounded-tr-xl rounded-bl-xl py-2 px-4 inline-block">
               <p className="break-words">{message.body}</p>
             </div>
