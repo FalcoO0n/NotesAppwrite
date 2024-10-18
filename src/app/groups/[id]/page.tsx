@@ -143,6 +143,7 @@ export default function GroupDetails({ params }: { params: { id: string } }) {
   if (!group) {
     return <div>Loading...</div>
   }
+  // console.log(group, "group ")
 
   return (
     <div>
@@ -154,7 +155,7 @@ export default function GroupDetails({ params }: { params: { id: string } }) {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
-          <ExpenseForm groupId={params.id} onAddExpense={handleAddExpense} />
+          <ExpenseForm groupId={params.id} onAddExpense={handleAddExpense} members={group.members} />
           <ExpenseList expenses={expenses} />
         </div>
         <div>
