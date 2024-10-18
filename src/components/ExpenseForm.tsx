@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 interface ExpenseFormProps {
   groupId: string
+  members: string[]
   onAddExpense: (expense: {
     amount: number
     description: string
@@ -16,13 +17,15 @@ interface ExpenseFormProps {
 
 const currencies = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF', 'CNY', 'INR'] // Add more currencies as needed
 
-export default function ExpenseForm({ groupId, onAddExpense }: ExpenseFormProps) {
+export default function ExpenseForm({ groupId, onAddExpense, members }: ExpenseFormProps) {
   const [amount, setAmount] = useState('')
   const [description, setDescription] = useState('')
   const [paidBy, setPaidBy] = useState('')
   const [date, setDate] = useState('')
   const [category, setCategory] = useState('')
   const [currency, setCurrency] = useState('USD')
+
+  // console.log(members, "members")
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -86,14 +89,17 @@ export default function ExpenseForm({ groupId, onAddExpense }: ExpenseFormProps)
       </div>
       <div>
         <label htmlFor="paidBy" className="block">Paid By</label>
-        <input
-          type="text"
+        <select
           id="paidBy"
           value={paidBy}
           onChange={(e) => setPaidBy(e.target.value)}
           required
           className="w-full px-3 py-2 border rounded"
-        />
+        >
+          {members.map((member) => (
+            <option key={member} value={member}>{member}</option>
+          ))}
+        </select>
       </div>
       <div>
         <label htmlFor="date" className="block">Date</label>
