@@ -141,6 +141,21 @@ function ChatRoom() {
     [deleteMessage]
   );
 
+  // const handleRealTimeMessage = client.subscribe(
+  //   [
+  //     `collections.${process.env
+  //       .NEXT_PUBLIC_APPWRITE_CHAT_COLLECTION_ID!}.documents`,
+  //   ],
+  //   (response) => {
+  //     // Callback will be executed on changes for documents A and all files.
+  //     console.log(response);
+  //   }
+  // );
+
+  // useEffect(() => {
+  //   handleRealTimeMessage();
+  // }, [handleRealTimeMessage]);
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col items-end max-h-[500px] overflow-y-auto p-2">
